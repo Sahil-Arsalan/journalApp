@@ -1,5 +1,6 @@
 package com.alamara.journalApp.Entity;
 
+import com.alamara.journalApp.Enum.Sentiment;
 import lombok.Data;
 import lombok.NonNull;
 import org.bson.types.ObjectId;
@@ -17,4 +18,5 @@ public class JournalEntry {
     private String title;
     private String content;
     private LocalDateTime date;
+    private Sentiment sentiment;
 }

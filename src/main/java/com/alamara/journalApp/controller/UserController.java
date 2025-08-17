@@ -1,8 +1,10 @@
 package com.alamara.journalApp.controller;
 
 import com.alamara.journalApp.Entity.User;
+import com.alamara.journalApp.api.response.WeatherResponse;
 import com.alamara.journalApp.repository.UserRepository;
 import com.alamara.journalApp.service.UserService;
+import com.alamara.journalApp.service.WeatherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,9 @@ public class UserController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private WeatherService weatherService;
 
     @PutMapping
     public ResponseEntity<?> updateJournalById(@RequestBody User user)
@@ -40,5 +45,16 @@ public class UserController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userRepository.deleteByUserName(authentication.getName());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping
+    public ResponseEntity<?> greeting(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        WeatherResponse weatherResponse = weatherService.getWeather("Mumbai");
+        String greeting="";
+        if(weatherResponse!=null){
+            greeting=" Weather feel like "+weatherResponse.getCurrent().getFeelsLike();
+        }
+        return new ResponseEntity<>("Hi "+authentication.getName() +greeting,HttpStatus.OK);
     }
 }

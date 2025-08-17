@@ -1,6 +1,7 @@
 package com.alamara.journalApp.controller;
 
 import com.alamara.journalApp.Entity.User;
+import com.alamara.journalApp.cache.AppCache;
 import com.alamara.journalApp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,8 @@ import java.util.List;
 @RequestMapping("/admin")
 public class AdminController {
 
+    @Autowired
+    private AppCache appCache;
 
     @Autowired
     private UserService userService;
@@ -30,5 +33,11 @@ public class AdminController {
     public void createUser(@RequestBody User user)
     {
         userService.saveAdmin(user);
+    }
+
+    @GetMapping("clear-app-cache")
+    public void clearAppCache()
+    {
+        appCache.init();
     }
 }
